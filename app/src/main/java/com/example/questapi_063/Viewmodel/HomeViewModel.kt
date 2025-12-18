@@ -1,6 +1,5 @@
 package com.example.questapi_063.Viewmodel
 
-import android.net.http.HttpException
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -35,7 +34,7 @@ class HomeViewModel (private val repositoryDataSiswa: RepositoryDataSiswa):
             }catch (e: IOException){
                 StatusUiSiswa.Error
             }
-            catch (e: HttpException){
+            catch (e: Exception){
                 StatusUiSiswa.Error
             }
         }
