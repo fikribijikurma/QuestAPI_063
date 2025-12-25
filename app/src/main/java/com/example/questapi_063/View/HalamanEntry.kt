@@ -19,14 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.questapi_063.R
 import com.example.questapi_063.Viewmodel.EntryViewModel
 import com.example.questapi_063.Viewmodel.provider.PenyediaViewModel
-import com.example.questapi_063.modeldata.DataSiswa
 import com.example.questapi_063.modeldata.DetailSiswa
 import com.example.questapi_063.modeldata.UIStateSiswa
 import com.example.questapi_063.uicontroller.route.DestinasiEntry
@@ -44,11 +43,12 @@ fun EntrySiswaScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
+            // Gunakan SiswaTopAppBar sesuai definisi di file navigasi Anda
             SiswaTopAppBar(
-                title = stringResource(DestinasiEntry.titleRes),
+                title = stringResource(id = DestinasiEntry.titleRes),
                 canNavigateBack = true,
-                navigateUp = navigateBack,
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                navigateUp = navigateBack
             )
         }
     ) { innerPadding ->
@@ -69,6 +69,7 @@ fun EntrySiswaScreen(
     }
 }
 
+// HAPUS kata 'private' agar bisa diakses HalamanEdit
 @Composable
 fun EntrySiswaBody(
     uiStateSiswa: UIStateSiswa,
@@ -77,8 +78,8 @@ fun EntrySiswaBody(
     modifier: Modifier = Modifier
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large)),
-        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+        modifier = modifier.padding(12.dp)
     ) {
         FormTambahSiswa(
             detailSiswa = uiStateSiswa.detailSiswa,
@@ -87,15 +88,16 @@ fun EntrySiswaBody(
         )
         Button(
             onClick = onSaveClick,
-            enabled = uiStateSiswa.isEntryValid,
+            enabled = uiStateSiswa.isEntryValid, // Kunci tombol submit
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(stringResource(R.string.btn_submit))
+            Text(text = stringResource(R.string.btn_submit))
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormTambahSiswa(
     detailSiswa: DetailSiswa,
@@ -105,7 +107,7 @@ fun FormTambahSiswa(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         OutlinedTextField(
             value = detailSiswa.nama,
@@ -126,21 +128,11 @@ fun FormTambahSiswa(
         OutlinedTextField(
             value = detailSiswa.telpon,
             onValueChange = { onValueChange(detailSiswa.copy(telpon = it)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             label = { Text(stringResource(R.string.telpon)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
-        )
-        if (enabled) {
-            Text(
-                text = stringResource(R.string.required_field),
-                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
-            )
-        }
-        Divider(
-            thickness = dimensionResource(R.dimen.padding_small),
-            modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium))
         )
     }
 }
