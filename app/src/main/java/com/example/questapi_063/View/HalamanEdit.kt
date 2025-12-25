@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.questapi_063.Viewmodel.EditViewModel
 import com.example.questapi_063.Viewmodel.provider.PenyediaViewModel
+import com.example.questapi_063.uicontroller.route.DestinasiEdit
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,6 +21,8 @@ fun EditSiswaScreen(
     modifier: Modifier = Modifier,
     viewModel: EditViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     Scaffold(
         topBar = {
             SiswaTopAppBar(
@@ -30,7 +33,7 @@ fun EditSiswaScreen(
         },
         modifier = modifier
     ) { innerPadding ->
-        val coroutineScope = rememberCoroutineScope()
+        // Memanggil EntrySiswaBody yang ada di HalamanEntry.kt
         EntrySiswaBody(
             uiStateSiswa = viewModel.uiStateSiswa,
             onSiswaValueChange = viewModel::updateUiState,
