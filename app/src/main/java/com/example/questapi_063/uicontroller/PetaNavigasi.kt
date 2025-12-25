@@ -12,6 +12,8 @@ import com.example.questapi_063.View.DetailSiswaScreen
 import com.example.questapi_063.View.EditSiswaScreen
 import com.example.questapi_063.View.EntrySiswaScreen
 import com.example.questapi_063.View.HomeScreen
+import com.example.questapi_063.uicontroller.route.DestinasiDetail
+import com.example.questapi_063.uicontroller.route.DestinasiEdit
 import com.example.questapi_063.uicontroller.route.DestinasiEntry
 import com.example.questapi_063.uicontroller.route.DestinasiHome
 
@@ -28,17 +30,22 @@ fun HostNavigasi(
     NavHost(
         navController = navController,
         startDestination = DestinasiHome.route,
-        modifier = Modifier
+        modifier = modifier // Menggunakan modifier dari parameter
     ) {
         composable(DestinasiHome.route) {
             HomeScreen(
                 navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
-                onDetailClick = { navController.navigate("${DestinasiDetail.route}/$it") }
+                // PERBAIKAN: Nama parameter harus 'navigateToItemUpdate' sesuai definisi di HomeScreen
+                navigateToItemUpdate = { navController.navigate("${DestinasiDetail.route}/$it") }
             )
         }
         composable(DestinasiEntry.route) {
             EntrySiswaScreen(
-                navigateBack = { navController.navigate(DestinasiHome.route) }
+                navigateBack = {
+                    navController.navigate(DestinasiHome.route) {
+                        popUpTo(DestinasiHome.route) { inclusive = true }
+                    }
+                }
             )
         }
         composable(
@@ -49,7 +56,7 @@ fun HostNavigasi(
         ) {
             DetailSiswaScreen(
                 navigateToEditItem = { navController.navigate("${DestinasiEdit.route}/$it") },
-                navigateBack = { navController.navigate(DestinasiHome.route) }
+                navigateBack = { navController.popBackStack() }
             )
         }
         composable(
@@ -59,7 +66,9 @@ fun HostNavigasi(
             })
         ) {
             EditSiswaScreen(
-                navigateBack = { navController.navigate(DestinasiHome.route) },
+                navigateBack = {
+                    navController.popBackStack(DestinasiHome.route, false)
+                },
                 onNavigateUp = { navController.navigateUp() }
             )
         }
