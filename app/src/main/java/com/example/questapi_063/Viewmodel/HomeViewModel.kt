@@ -1,5 +1,6 @@
 package com.example.questapi_063.Viewmodel
 
+import android.net.http.HttpException
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,8 +17,7 @@ sealed interface StatusUiSiswa {
     object Loading : StatusUiSiswa
 }
 
-class HomeViewModel (private val repositoryDataSiswa: RepositoryDataSiswa):
-    ViewModel() {
+class HomeViewModel(private val repositoryDataSiswa: RepositoryDataSiswa): ViewModel() {
     var listSiswa: StatusUiSiswa by mutableStateOf(StatusUiSiswa.Loading)
         private set
 
@@ -29,12 +29,10 @@ class HomeViewModel (private val repositoryDataSiswa: RepositoryDataSiswa):
         viewModelScope.launch {
             listSiswa = StatusUiSiswa.Loading
             listSiswa = try {
-                StatusUiSiswa.Success(repositoryDataSiswa
-                    .getDataSiswa())
-            }catch (e: IOException){
+                StatusUiSiswa.Success(repositoryDataSiswa.getDataSiswa())
+            } catch (e: IOException) {
                 StatusUiSiswa.Error
-            }
-            catch (e: Exception){
+            } catch (e: HttpException) {
                 StatusUiSiswa.Error
             }
         }
