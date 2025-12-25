@@ -1,8 +1,8 @@
 package com.example.questapi_063.repositori
 
-import android.R.attr.level
 import android.app.Application
 import com.example.questapi_063.apiservice.ServiceApiSiswa
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -13,25 +13,27 @@ interface ContainerApp {
     val repositoryDataSiswa : RepositoryDataSiswa
 }
 
-class DefaultContainerApp : ContainerApp{
+class DefaultContainerApp : ContainerApp {
     private val baseurl = "http://10.0.2.2/tiumy/"
 
-    val logging = HttpLoggingInterceptor().apply {
+    private val json = Json {
+        ignoreUnknownKeys = true
+        prettyPrint = true
+        isLenient = true
+    }
+
+    private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    val klien = OkHttpClient.Builder()
+    private val klien = OkHttpClient.Builder()
         .addInterceptor(logging)
         .build()
 
-    private val  retrofit: Retrofit = Retrofit.Builder()
+    private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(baseurl)
         .addConverterFactory(
-            Json {
-                ignoreUnknownKeys = true
-                prettyPrint = true
-                isLenient = true
-            }.asConverterFactory("application/json".toMediaType())
+            json.asConverterFactory("application/json".toMediaType())
         )
         .client(klien)
         .build()
@@ -41,7 +43,9 @@ class DefaultContainerApp : ContainerApp{
     }
 
     override val repositoryDataSiswa: RepositoryDataSiswa by lazy {
-        RepositoryDataSiswa(retrofitService)
+        // PERBAIKAN: Ganti RepositoryDataSiswaImpl menjadi JaringanRepositoryDataSiswa
+        // Sesuai dengan nama class yang ada di file Repositori Anda
+        JaringanRepositoryDataSiswa(retrofitService)
     }
 }
 
