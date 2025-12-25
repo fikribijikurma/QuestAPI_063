@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.questapi_063.R
 import com.example.questapi_063.Viewmodel.EntryViewModel
+import com.example.questapi_063.Viewmodel.provider.PenyediaViewModel
 import com.example.questapi_063.modeldata.DataSiswa
 import com.example.questapi_063.modeldata.DetailSiswa
 import com.example.questapi_063.modeldata.UIStateSiswa
@@ -40,7 +41,6 @@ fun EntrySiswaScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -98,7 +98,7 @@ fun EntrySiswaBody(
 
 @Composable
 fun FormTambahSiswa(
-    detailSiswa: DataSiswa,
+    detailSiswa: DetailSiswa,
     modifier: Modifier = Modifier,
     onValueChange: (DetailSiswa) -> Unit = {},
     enabled: Boolean = true
@@ -132,17 +132,15 @@ fun FormTambahSiswa(
             enabled = enabled,
             singleLine = true
         )
-
         if (enabled) {
             Text(
                 text = stringResource(R.string.required_field),
                 modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
             )
         }
-
         Divider(
             thickness = dimensionResource(R.dimen.padding_small),
-            modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_medium))
+            modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium))
         )
     }
 }
