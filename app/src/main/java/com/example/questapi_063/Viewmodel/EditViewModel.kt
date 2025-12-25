@@ -11,8 +11,10 @@ import com.example.questapi_063.modeldata.UIStateSiswa
 import com.example.questapi_063.modeldata.toDataSiswa
 import com.example.questapi_063.modeldata.toUiStateSiswa
 import com.example.questapi_063.repositori.RepositoryDataSiswa
+import com.example.questapi_063.uicontroller.route.DestinasiDetail
 import kotlinx.coroutines.launch
-import okhttp3.Response
+// PERBAIKAN: Ganti okhttp3.Response menjadi retrofit2.Response
+import retrofit2.Response
 
 class EditViewModel(
     savedStateHandle: SavedStateHandle,
@@ -43,6 +45,7 @@ class EditViewModel(
 
     suspend fun editSatuSiswa() {
         if (validasiInput(uiStateSiswa.detailSiswa)) {
+            // Sekarang Response<Void> akan terbaca dengan benar oleh compiler
             val call: Response<Void> = repositoryDataSiswa.editSatuSiswa(
                 idSiswa,
                 uiStateSiswa.detailSiswa.toDataSiswa()
