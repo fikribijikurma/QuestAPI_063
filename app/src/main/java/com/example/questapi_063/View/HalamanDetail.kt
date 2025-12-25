@@ -8,6 +8,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -29,6 +31,7 @@ import com.example.questapi_063.R
 import com.example.questapi_063.Viewmodel.DetailViewModel
 import com.example.questapi_063.Viewmodel.StatusUIDetail
 import com.example.questapi_063.Viewmodel.provider.PenyediaViewModel
+import com.example.questapi_063.modeldata.DataSiswa
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,6 +126,38 @@ private fun BodyDetailSiswa(
             is StatusUIDetail.Error -> {
                 Text(text = "Error loading data")
             }
+        }
+    }
+}
+
+@Composable
+fun ItemDetailSiswa(
+    siswa: DataSiswa, modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier, colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+        ) {
+            ItemDetailData(
+                labelResID = R.string.nama1,
+                itemDetail = siswa.nama,
+            )
+            ItemDetailData(
+                labelResID = R.string.alamat1,
+                itemDetail = siswa.alamat,
+            )
+            ItemDetailData(
+                labelResID = R.string.telpon1,
+                itemDetail = siswa.telpon,
+            )
         }
     }
 }
